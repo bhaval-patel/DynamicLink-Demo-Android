@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "670395294508",
+    "firebase_url": "https://spaceogithubdynamiclink.firebaseio.com",
+    "project_id": "spaceogithubdynamiclink",
+    "storage_bucket": "spaceogithubdynamiclink.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670395294508:android:047b9672dd09bcb0d38289",
+        "android_client_info": {
+          "package_name": "com.spaceo.dynamiclink"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "670395294508-7v4lsgtbn6ti7359aueqvfaqu5iovkaj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.spaceo.dynamiclink",
+            "certificate_hash": "f3b200e548a7bd395c03cd7d02a13fe2246ddfaf"
+          }
+        },
+        {
+          "client_id": "670395294508-v0lqencudhfu2a2uvepcvn8kirs0n2a3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPHeO8HN6Sz8GMS93FXQll6AWlNnONhn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "670395294508-v0lqencudhfu2a2uvepcvn8kirs0n2a3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

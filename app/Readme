@@ -1,0 +1,104 @@
+
+
+******** To Generate Dynamic Link ********
+
+ 1) Create Firebase Project
+
+ 2) add json file in your project
+
+ 3) add following dependencies to your app gradle
+    - implementation 'com.google.firebase:firebase-dynamic-links-ktx:19.1.0'
+    - implementation 'com.google.firebase:firebase-analytics-ktx:17.4.4'
+
+ 4)
+     val invitationLink =
+                     "http://www.yopmail.com/?invitedby=${refferCode.value}" //Pass param in link as query params
+     4.1) Long Dynamic Link
+        Generate Dynamic link using following function
+                val dynamicLink = Firebase.dynamicLinks.dynamicLink {
+                    link =
+                        Uri.parse(invitationLink)
+                    domainUriPrefix = "https://spaceo.page.link"
+                    // Open links with this app on Android
+                    androidParameters {
+                      // The versionCode of the minimum version of your app that can open the link.
+                      // If the installed app is an older version, the user is taken to the Play Store to upgrade the app.
+                        minimumVersion = 1
+                    }
+                    // Open links with com.example.ios on iOS
+                    // iosParameters("com.example.ios") { }
+                }
+
+         val dynamicLinkUri = dynamicLink.uri  // get Link
+
+    4.2) Short Dynamic Link
+        val shortLinkTask = Firebase.dynamicLinks.shortLinkAsync {
+                    link =
+                        Uri.parse(invitationLink)
+                    domainUriPrefix = "https://spaceo.page.link"
+
+                    androidParameters {
+                    // The versionCode of the minimum version of your app that can open the link.
+                    // If the installed app is an older version, the user is taken to the Play Store to upgrade the app.
+                        minimumVersion = 1
+                    }
+                    // Set parameters
+                    // ...
+                }.addOnSuccessListener { result ->
+                    // Short link created
+                    val shortLink = result.shortLink
+                    //val flowchartLink = result.previewLink
+                    this.shortLink.value = shortLink.toString()
+                }.addOnFailureListener {
+                    // Error
+                    // ...
+                    Log.d("log_tag", "==> ${it.localizedMessage}", it)
+                    this.shortLink.value = it.localizedMessage
+                }
+
+
+
+******** To Receive Deep Linking ********
+ 1) Add an intent filter in activity tag like below
+     <activity
+                android:name=".DeepLinkReceiveActivity"
+                android:screenOrientation="portrait">
+                <intent-filter>
+                    <action android:name="android.intent.action.VIEW" />
+
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <category android:name="android.intent.category.BROWSABLE" />
+
+                    <data
+                        android:host="www.yopmail.com"
+                        android:scheme="http" />
+                    <data
+                        android:host="www.yopmail.com"
+                        android:scheme="https" />
+                </intent-filter>
+            </activity>
+
+
+ 2) In Your activity to get data from link use below code
+      Firebase.dynamicLinks
+                .getDynamicLink(intent)
+                .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                    // Get deep link from result (may be null if no link is found)
+                    var deepLink: Uri? = null
+                    if (pendingDynamicLinkData != null) {
+                        deepLink = pendingDynamicLinkData.link
+                        Log.d("TAG", "==> ${deepLink.toString()}")
+                        if (deepLink?.getBooleanQueryParameter("invitedby", false) == true)
+                            binding.linkData = deepLink.getQueryParameter("invitedby")
+                    }
+
+                    // Handle the deep link. For example, open the linked
+                    // content, or apply promotional credit to the user's
+                    // account.
+                    // ...
+
+                    // ...
+                }
+                .addOnFailureListener(this) { e -> Log.w("TAG", "getDynamicLink:onFailure", e) }
+
+
